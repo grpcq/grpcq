@@ -1,0 +1,12 @@
+# grpcq
+
+This document is generated from `grunt nodocs` to anyone overview whole project at a glance.
+
+## Tests
+
+Use mocha, chai assert.
+
+- `mocha tests/client.js --grep="local ping pong"`
+
+### src/index
+
