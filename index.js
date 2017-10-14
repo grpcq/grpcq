@@ -1,9 +1,8 @@
 /*
- * <h1 style="text-align:center">grpcq</h1>
- * 
- * <p style="text-align:center">
+ * <div align="center">
+ * <h1>grpcq</h1>
  * Multi backend queue for Node.js and any languages via gRPC.
- * </p>
+ * </div>
  * 
  * ## Features
  * 
@@ -24,7 +23,7 @@
  * 
  * Install package from `npm install grpcq --save` or `yarn add grpcq`.
  * 
- * ```
+ * ```js
  * const grpcq = require('grpcq')
  * 
  * grpcq.subscribe({
