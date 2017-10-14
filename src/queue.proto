@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package grpcq;
+
+service Queue {
+  rpc subscribe(Topic) returns (stream Message) {}
+  rpc publish(PostMessage) returns (MessageReceipt) {}
+}
+
+message Topic {
+  string version = 1;
+  string option = 2;
+}
+
+message PostMessage {
+  string version = 1;
+  string body = 2;
+}
+
+message Message {
+  string id = 1;
+  string body = 2;
+}
+
+message MessageReceipt {
+  string id = 1;
+}
