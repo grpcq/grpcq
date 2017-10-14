@@ -4,9 +4,71 @@
  * ...
  */
 
+const grpc = require('grpc')
+const debug = require('debug')('grpcq')
+const verbose_message = require('debug')('grpcq:verbose')
+const code = require('./constants.js')
+const backends = {
+  sqs: require('./backend.sqs.js'),
+  memory: require('./backend.memory.js'),
+}
+
 class gRPCQueueServer {
   createServer (opt = {}) {
-    
+    if(!backends[opt.backend])
+      throw new Error('Not supported backend=' + opt.backend)
+
+    const version = (num) => {
+      const descriptor = grpc.load(`./src/queue.proto`)
+      const api = descriptor.grpcq
+      return api
+    }
+    const api = version()
+    const server = new grpc.Server()
+    server.addService(api.Queue.service, {
+      subscribe: (call) => {
+        debug('[server] subscribe > %o', call.request)
+        const request = JSON.parse(call.request.option)
+        const backend = String(request.type)
+        
+        try {
+          if(!backends[backend])
+            throw new Error('Backend not supported ' + backend)
+          
+          if(!backends[backend].subscribe)
+            throw new Error('Backend subscribe not implemented')
+        
+          backends[backend].subscribe(call)
+        } catch (error) {
+          call.write({
+            id: code.STATUS_500,
+            body: JSON.stringify({
+              message: error.message,
+            }),
+          })
+          call.end()
+        }
+      },
+      publish: (call, callback) => {
+        debug('[server] publish > %o', call.request)
+        const request = JSON.parse(call.request.body)
+        const backend = String(request.type)
+        
+        if(!backends[backend])
+          return callback(new Error('Backend not supported ' + backend))
+        
+        if(!backends[backend].publish)
+          return callback(new Error('Backend publish not implemented'))
+        
+        backends[backend].publish(call, callback)
+      },
+    })
+
+    opt.bindAddress = opt.bindAddress || '0.0.0.0:50051'
+    opt.grpcServerCredential = opt.grpcServerCredential || grpc.ServerCredentials.createInsecure()
+    server.bind(opt.bindAddress, opt.grpcServerCredential)
+    debug('[server] listening on ' + opt.bindAddress)
+    return server
   }
 }
 

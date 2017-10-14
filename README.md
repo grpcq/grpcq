@@ -58,3 +58,13 @@ Use mocha, chai assert.
 
 - `npm test -- --grep="local ping pong"`
 
+- `npm test -- --grep="grpcq server"`
+
+- `npm test -- --grep="local createServer without opt"`
+
+- `npm test -- --grep="local createServer with invalid backend"`
+
+- `npm test -- --grep="local createServer with memory backend"`
+
+- `npm test -- --grep="createServer fail to auth"`
+

@@ -33,7 +33,8 @@
     "grunt": "^1.0.1",
     "grunt-nodocs": "^1.0.5",
     "jshint": "^2.9.5",
-    "mocha": "^4.0.1"
+    "mocha": "^4.0.1",
+    "rsv": "^1.0.2"
   },
   "engines": {
     "node": ">=7"
@@ -54,5 +55,9 @@
         "never"
       ]
     }
+  },
+  "dependencies": {
+    "debug": "^3.1.0",
+    "grpc": "^1.6.6"
   }
 }
