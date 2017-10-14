@@ -1,0 +1,58 @@
+{
+  "name": "grpcq",
+  "version": "0.0.1",
+  "description": "gRPC Queue for managed backends.",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./node_modules/mocha/bin/mocha tests/*.js",
+    "lint": "node ./node_modules/eslint/bin/eslint index.js src/*.js",
+    "version": "node ./node_modules/grunt/bin/grunt nodocs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grpcq/grpcq.git"
+  },
+  "keywords": [
+    "queue",
+    "jobqueue",
+    "sqs",
+    "pubsub",
+    "grpc",
+    "redis",
+    "message",
+    "scheduler"
+  ],
+  "author": "grpcq@googlegroups.com",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/grpcq/grpcq/issues"
+  },
+  "homepage": "https://github.com/grpcq/grpcq#readme",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "grunt": "^1.0.1",
+    "grunt-nodocs": "^1.0.5",
+    "jshint": "^2.9.5",
+    "mocha": "^4.0.1"
+  },
+  "engines": {
+    "node": ">=7"
+  },
+  "files": [
+    "LICENSE",
+    "index.js",
+    "src/*.js"
+  ],
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "env": {
+      "node": true
+    },
+    "rules": {
+      "semi": [
+        "error",
+        "never"
+      ]
+    }
+  }
+}
