@@ -52,19 +52,23 @@ let receipt = await grpcq.publish({
 
 Use mocha, chai assert.
 
-- `npm test -- --grep="grpcq client"`
+For debug `export DEBUG=grpcq*`
 
-- `npm test -- --grep="local require"`
+##### `npm test -- --grep="grpcq client"`
 
-- `npm test -- --grep="local ping pong"`
 
-- `npm test -- --grep="grpcq server"`
+> npm test -- --grep="local require"
 
-- `npm test -- --grep="local createServer without opt"`
+> npm test -- --grep="ping pong with memory backend"
 
-- `npm test -- --grep="local createServer with invalid backend"`
+##### `npm test -- --grep="grpcq server"`
 
-- `npm test -- --grep="local createServer with memory backend"`
 
-- `npm test -- --grep="createServer fail to auth"`
+> npm test -- --grep="local createServer without opt"
+
+> npm test -- --grep="local createServer with invalid backend"
+
+> npm test -- --grep="local createServer with memory backend"
+
+> npm test -- --grep="createServer fail to auth"
 
