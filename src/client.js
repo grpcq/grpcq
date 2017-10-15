@@ -14,6 +14,10 @@ const backends = {
   memory: require('./backend.memory.js'),
 }
 
+const default_listener_on_error = (error) => {
+  console.error('[grpcq] Uncaught, unspecified "error" event: ', error)  
+}
+
 class gRPCQueue {
   constructor (opt = {}) {
     this.type = opt.type
@@ -31,6 +35,7 @@ class gRPCQueue {
 
   subscribe (opt = {}) {
     opt.type = opt.type || this.type
+    opt.version = opt.version || this.version
     opt.endpoint = opt.endpoint || this.endpoint
     opt.access_key_id = opt.access_key_id || this.access_key_id
     opt.secret_access_key = opt.secret_access_key || this.secret_access_key
@@ -62,7 +67,7 @@ class gRPCQueue {
           return stream.emit('active')
         }
         const json = JSON.parse(message.body || '{"message":"empty body"}')
-        if(!message.id || message.id == '-1'){
+        if(!message.id || message.id === code.STATUS_500){
           // check error
           if(stream.listeners('error').length === 0){
             // set default if no error handler
@@ -77,6 +82,7 @@ class gRPCQueue {
 
   async publish (opt = {}) {
     opt.type = opt.type || this.type
+    opt.version = opt.version || this.version
     opt.endpoint = opt.endpoint || this.endpoint
     opt.access_key_id = opt.access_key_id || this.access_key_id
     opt.secret_access_key = opt.secret_access_key || this.secret_access_key
