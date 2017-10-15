@@ -61,6 +61,8 @@ For debug `export DEBUG=grpcq*`
 
 > npm test -- --grep="ping pong with memory backend"
 
+> npm test -- --grep="kue driver ping pong"
+
 ##### `npm test -- --grep="grpcq server"`
 
 
