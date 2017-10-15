@@ -60,4 +60,60 @@ describe('grpcq client', () => {
       })
     }).timeout(10000)
   })
+  describe('kue driver', () => {
+    it('ping pong', function (done) {
+      /*
+       * > npm test -- --grep="kue driver ping pong"
+       */
+      const grpcq = require('../index.js')
+      const server = grpcq.createServer({
+        backend: 'kue',
+        jobEvents: true,
+        prefix: 'grpcq',
+        redis: {
+          port: 6379,
+          host: 'localhost',
+        }
+      })
+      let didForceShutdown = false
+      after(function(){
+        didForceShutdown = true
+        server.forceShutdown()
+      })
+      server.start()
+
+      const queue = grpcq.defaults({
+        type: 'kue',
+      })
+      
+      let publish_something = null
+      let ts = Date.now()
+      queue.subscribe({
+        name: 'test',
+      })
+      .on('message', (message) => {
+        // assert.isAbove((Date.now()-ts), 500, 'delay works?')
+        done(null)
+      })
+      .on('error', function (error) {
+        if(didForceShutdown)
+          done()
+        else {
+          done(new Error(error.message))
+        }
+      })
+      .on('active', () => {
+        publish_something = queue.publish({
+          name: 'test',
+          data: {
+            ts: ts,
+          },
+          // delay: 500,
+        })
+        .then(receipt => {
+          assert.isString(receipt.id)
+        })
+      })
+    }).timeout(10000)
+  })
 })

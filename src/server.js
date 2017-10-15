@@ -11,11 +11,13 @@ const code = require('./constants.js')
 const version = require('./version.js')
 const backends = {
   sqs: require('./backend.sqs.js'),
+  kue: require('./backend.kue.js'),
   memory: require('./backend.memory.js'),
 }
 
 class gRPCQueueServer {
   createServer (opt = {}) {
+    this.opt = opt
     if(!backends[opt.backend])
       throw new Error('Not supported backend=' + opt.backend)
     
@@ -33,7 +35,7 @@ class gRPCQueueServer {
           
           if(!backends[backend].subscribe)
             throw new Error('Backend subscribe not implemented')
-        
+          
           backends[backend].subscribe(call)
           call.write({
             id: code.STATUS_PONG,
@@ -68,6 +70,16 @@ class gRPCQueueServer {
     opt.grpcServerCredential = opt.grpcServerCredential || grpc.ServerCredentials.createInsecure()
     server.bind(opt.bindAddress, opt.grpcServerCredential)
     debug('[server] listening on ' + opt.bindAddress)
+    server._start = server.start
+    server.start = () => {
+      backends[opt.backend].start(opt)
+      server._start()
+    }
+    server._forceShutdown = server.forceShutdown
+    server.forceShutdown = () => {
+      backends[opt.backend].stop(opt)
+      server._forceShutdown()
+    }
     return server
   }
 }
