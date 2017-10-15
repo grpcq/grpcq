@@ -3,7 +3,14 @@
  */
 
 module.exports = {
-  createServer: require('./server.js').createServer,
-  subscribe: require('./client.js').subscribe,
-  publish: require('./client.js').publish,
+  createServer: (opt) => {
+    return require('./server.js').createServer(opt)
+  },
+  subscribe: (opt) => {
+    return require('./client.js').subscribe(opt)
+  },
+  publish: (opt) => {
+    return require('./client.js').publish(opt)
+  },
+  defaults: require('./client.js').defaults,
 }

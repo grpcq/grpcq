@@ -3,12 +3,13 @@ const rsv = require('rsv')
 
 describe('grpcq server', () => {
   /*
-   * - `npm test -- --grep="grpcq server"`
+   * ##### `npm test -- --grep="grpcq server"`
+   * 
    */
   describe('local', () => {
     it('createServer without opt', async () => {
       /*
-       * - `npm test -- --grep="local createServer without opt"`
+       * > npm test -- --grep="local createServer without opt"
        */
       const grpcq = require('../index.js')
       const server = grpcq.createServer()
@@ -17,7 +18,7 @@ describe('grpcq server', () => {
     })
     it('createServer with invalid backend', async () => {
       /*
-       * - `npm test -- --grep="local createServer with invalid backend"`
+       * > npm test -- --grep="local createServer with invalid backend"
        */
       try {
         const grpcq = require('../index.js')
@@ -31,7 +32,7 @@ describe('grpcq server', () => {
     })
     it('createServer with memory backend', async () => {
       /*
-       * - `npm test -- --grep="local createServer with memory backend"`
+       * > npm test -- --grep="local createServer with memory backend"
        */
       const grpcq = require('../index.js')
       const server = grpcq.createServer({
@@ -49,7 +50,7 @@ describe('grpcq server', () => {
   describe('sqs', () => {
     it('createServer fail to auth', async () => {
       /*
-       * - `npm test -- --grep="createServer fail to auth"`
+       * > npm test -- --grep="createServer fail to auth"
        */
       try {
         const grpcq = require('../index.js')

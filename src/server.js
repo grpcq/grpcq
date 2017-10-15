@@ -8,6 +8,7 @@ const grpc = require('grpc')
 const debug = require('debug')('grpcq')
 const verbose_message = require('debug')('grpcq:verbose')
 const code = require('./constants.js')
+const version = require('./version.js')
 const backends = {
   sqs: require('./backend.sqs.js'),
   memory: require('./backend.memory.js'),
@@ -17,12 +18,7 @@ class gRPCQueueServer {
   createServer (opt = {}) {
     if(!backends[opt.backend])
       throw new Error('Not supported backend=' + opt.backend)
-
-    const version = (num) => {
-      const descriptor = grpc.load(`./src/queue.proto`)
-      const api = descriptor.grpcq
-      return api
-    }
+    
     const api = version()
     const server = new grpc.Server()
     server.addService(api.Queue.service, {
@@ -39,6 +35,10 @@ class gRPCQueueServer {
             throw new Error('Backend subscribe not implemented')
         
           backends[backend].subscribe(call)
+          call.write({
+            id: code.STATUS_PONG,
+            body: '{}',
+          })
         } catch (error) {
           call.write({
             id: code.STATUS_500,

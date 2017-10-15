@@ -1,3 +1,4 @@
 module.exports = Object.freeze({
-  STATUS_500: '-500'
+  STATUS_PONG: '-PONG',
+  STATUS_500: '-500',
 })
