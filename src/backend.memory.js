@@ -33,3 +33,6 @@ module.exports.publish = function (call, callback) {
     id: String(call.request.id),
   })
 }
+
+module.exports.start = function (opt) { return true }
+module.exports.stop = function (opt) { return true }
