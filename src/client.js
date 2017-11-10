@@ -21,8 +21,6 @@ const default_listener_on_error = (error) => {
 class gRPCQueue {
   constructor (opt = {}) {
     this.type = opt.type
-    this.access_key_id = opt.access_key_id
-    this.secret_access_key = opt.secret_access_key
     this.version = 1
     this.endpoint = 'localhost:50051'
     this.grpcCredential = opt.grpcCredential || grpc.credentials.createInsecure()
@@ -37,8 +35,6 @@ class gRPCQueue {
     opt.type = opt.type || this.type
     opt.version = opt.version || this.version
     opt.endpoint = opt.endpoint || this.endpoint
-    opt.access_key_id = opt.access_key_id || this.access_key_id
-    opt.secret_access_key = opt.secret_access_key || this.secret_access_key
     opt.timeout = opt.timeout || this.timeout
     opt.max_retry = opt.max_retry || this.max_retry
     opt.deadletter = opt.deadletter || this.deadletter
@@ -61,6 +57,7 @@ class gRPCQueue {
     })
     stream
       .on('data', (message, a) => {
+        console.log('>>>>>>>>>', message)
         verbose_message('stream:data %O', message)
         verbose_message('stream:data %O', a)
         if(message.id == code.STATUS_PONG){
@@ -84,8 +81,6 @@ class gRPCQueue {
     opt.type = opt.type || this.type
     opt.version = opt.version || this.version
     opt.endpoint = opt.endpoint || this.endpoint
-    opt.access_key_id = opt.access_key_id || this.access_key_id
-    opt.secret_access_key = opt.secret_access_key || this.secret_access_key
     opt.timeout = opt.timeout || this.timeout
     opt.max_retry = opt.max_retry || this.max_retry
     opt.deadletter = opt.deadletter || this.deadletter
