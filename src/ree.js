@@ -49,13 +49,13 @@ class RemoteEventEmitter extends EventEmitter {
             }).promise()
           }
         }      
-        // loop
-        process.nextTick(receive)  
       } catch (error) {
         debug('>', error)
         that.emit('error', error)
       }
-      
+      // end stack
+      // loop
+      process.nextTick(receive)
     }
     receive()
 
