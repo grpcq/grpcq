@@ -1,2 +1,4 @@
 node_modules
 *.log
+tests/config.js
+.debugs

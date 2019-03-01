@@ -36,11 +36,12 @@ class gRPCQueueServer {
           if(!backends[backend].subscribe)
             throw new Error('Backend subscribe not implemented')
           
+          call.request.server_option = this.opt
           backends[backend].subscribe(call)
-          call.write({
-            id: code.STATUS_PONG,
-            body: '{}',
-          })
+          // call.write({
+          //   id: code.STATUS_PONG,
+          //   body: '{}',
+          // })
         } catch (error) {
           call.write({
             id: code.STATUS_500,
@@ -62,7 +63,9 @@ class gRPCQueueServer {
         if(!backends[backend].publish)
           return callback(new Error('Backend publish not implemented'))
         
+        call.request.server_option = this.opt
         backends[backend].publish(call, callback)
+        // .catch()
       },
     })
 
